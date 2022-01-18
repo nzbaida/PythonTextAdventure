@@ -73,6 +73,84 @@ player_list['Player 2']['Character Profile']['Intellect'] = random.randint(1,100
 player_list['Player 2']['Character Profile']['Dexterity'] = random.randint(1,100)
 player_list['Player 2']['Character Profile']['Charisma'] = random.randint(1,100)
 
+#Adjusting for Character types
+for i in [1,2]:
+    player_number = 'Player ' + str(i)
+#Elf Changes
+    if player_list[player_number]['Character Profile']['Race'] == 'Elf':
+        if (player_list[player_number]['Character Profile']['Dexterity'] + 5) <= 100:
+            player_list[player_number]['Character Profile']['Dexterity'] += 5
+        else:
+            player_list[player_number]['Character Profile']['Dexterity'] = min((player_list[player_number]['Character Profile']['Dexterity'] + 5), 100)
+        if (player_list[player_number]['Character Profile']['Intellect'] + 9) <= 100:
+            player_list[player_number]['Character Profile']['Intellect'] += 9
+        else:
+            player_list[player_number]['Character Profile']['Intellect'] = min((player_list[player_number]['Character Profile']['Intellect'] + 9), 100)
+        if (player_list[player_number]['Character Profile']['Strength'] - 9) >= 0:
+            player_list[player_number]['Character Profile']['Strength'] -= 9
+        else:
+            player_list[player_number]['Character Profile']['Strength'] = max((player_list[player_number]['Character Profile']['Strength'] - 9), 0)
+
+#Dwarf Changes    
+    elif player_list[player_number]['Character Profile']['Race'] == 'Dwarf':
+        if (player_list[player_number]['Character Profile']['Dexterity'] + 8) <= 100:
+            player_list[player_number]['Character Profile']['Dexterity'] += 8
+        else:
+            player_list[player_number]['Character Profile']['Dexterity'] = min((player_list[player_number]['Character Profile']['Dexterity'] + 8), 100)
+        if (player_list[player_number]['Character Profile']['Strength'] + 15) <= 100:
+            player_list[player_number]['Character Profile']['Strength'] += 15
+        else:
+            player_list[player_number]['Character Profile']['Strength'] = min((player_list[player_number]['Character Profile']['Strength'] + 15), 100)
+        if (player_list[player_number]['Character Profile']['Intellect'] - 9) >= 0:
+            player_list[player_number]['Character Profile']['Intellect'] -= 9
+        else:
+            player_list[player_number]['Character Profile']['Intellect'] = max((player_list[player_number]['Character Profile']['Intellect'] - 9), 0)
+
+#Orc Changes    
+    elif player_list[player_number]['Character Profile']['Race'] == 'Orc':
+        if (player_list[player_number]['Character Profile']['Dexterity'] + 18) <= 100:
+            player_list[player_number]['Character Profile']['Dexterity'] += 18
+        else:
+            player_list[player_number]['Character Profile']['Dexterity'] = min((player_list[player_number]['Character Profile']['Dexterity'] + 18), 100)
+        if (player_list[player_number]['Character Profile']['Strength'] + 25) <= 100:
+            player_list[player_number]['Character Profile']['Strength'] += 25
+        else:
+            player_list[player_number]['Character Profile']['Strength'] = min((player_list[player_number]['Character Profile']['Strength'] + 25), 100)
+        if (player_list[player_number]['Character Profile']['Intellect'] - 18) >= 0:
+            player_list[player_number]['Character Profile']['Intellect'] -= 18
+        else:
+            player_list[player_number]['Character Profile']['Intellect'] = max((player_list[player_number]['Character Profile']['Intellect'] - 18), 0)
+        if (player_list[player_number]['Character Profile']['Charisma'] - 30) >= 0:
+            player_list[player_number]['Character Profile']['Charisma'] -= 30
+        else:
+            player_list[player_number]['Character Profile']['Charisma'] = max((player_list[player_number]['Character Profile']['Charisma'] - 30), 0)
+
+#Male changes
+    if player_list[player_number]['Character Profile']['Sex'] == 'Male':
+        if (player_list[player_number]['Character Profile']['Strength'] + 3) <= 100:
+            player_list[player_number]['Character Profile']['Strength'] += 3
+        else:
+            player_list[player_number]['Character Profile']['Strength'] = min((player_list[player_number]['Character Profile']['Strength'] + 3), 100)
+        if (player_list[player_number]['Character Profile']['Charisma'] - 5) >= 0:
+            player_list[player_number]['Character Profile']['Charisma'] -= 5
+        else:
+            player_list[player_number]['Character Profile']['Charisma'] = max((player_list[player_number]['Character Profile']['Charisma'] - 5), 0)
+
+#Female changes
+    elif player_list[player_number]['Character Profile']['Sex'] == 'Female':
+        if (player_list[player_number]['Character Profile']['Dexterity'] + 3) <= 100:
+            player_list[player_number]['Character Profile']['Dexterity'] += 3
+        else:
+            player_list[player_number]['Character Profile']['Dexterity'] = min((player_list[player_number]['Character Profile']['Dexterity'] + 3), 100)
+        if (player_list[player_number]['Character Profile']['Charisma'] + 2) <= 100:
+            player_list[player_number]['Character Profile']['Charisma'] += 2
+        else:
+            player_list[player_number]['Character Profile']['Charisma'] = min((player_list[player_number]['Character Profile']['Charisma'] + 2), 100)
+        if (player_list[player_number]['Character Profile']['Strength'] - 5) >= 0:
+            player_list[player_number]['Character Profile']['Strength'] -= 5
+        else:
+            player_list[player_number]['Character Profile']['Strength'] = max((player_list[player_number]['Character Profile']['Strength'] - 5), 0)
+
 #Secondary character stats
 for i in [1,2]:
     player_number = 'Player ' + str(i)
@@ -111,6 +189,9 @@ print("\n")
 #Ask players to purchase items
 purchase_counter = 1
 print('Please purchase items from the trader or type "no" to stop.')
+print('If player charisma is below 20, actual costs are 10% higher than standard (truncated to nearest whole number).')
+print('If player charisma exceeds 80, actual costs are 10% lower than standard (trunacted to nearest whole number).')
+print("\n")
 player_1_inventory = []
 player_2_inventory = []
 print(player_list['Player 1']['Character Profile']['Name'] + ' available gold ' + str(player_list['Player 1']['Secondary Stats']['Gold']))
@@ -140,12 +221,17 @@ while True:
              elif purchase == 'no':
                  break
              else:
-                if player_list['Player 2']['Secondary Stats']['Gold'] > trader['Items'][purchase][0] and trader['Inventory'][purchase] > 0:
+                cost = trader['Items'][purchase][0]
+                if player_list['Player 2']['Character Profile']['Charisma'] < 20:
+                    cost = int(cost * 1.1)
+                elif player_list['Player 2']['Character Profile']['Charisma'] > 80:
+                    cost = int(cost * 0.9)
+                if player_list['Player 2']['Secondary Stats']['Gold'] >  cost and trader['Inventory'][purchase] > 0:
                    player_2_inventory.append(purchase)
-                   player_list['Player 2']['Secondary Stats']['Gold'] -= trader['Items'][purchase][0]
+                   player_list['Player 2']['Secondary Stats']['Gold'] -= cost
                    trader['Inventory'][purchase] -= 1
-                elif player_list['Player 2']['Secondary Stats']['Gold'] < trader['Items'][purchase][0]:
-                    while player_list['Player 2']['Secondary Stats']['Gold'] < trader['Items'][purchase][0]:
+                elif player_list['Player 2']['Secondary Stats']['Gold'] < cost:
+                    while player_list['Player 2']['Secondary Stats']['Gold'] < cost:
                         print('You don\'t have enough money for that! ')
                         print('Buy something you can afford. ')
                         purchase = input()
@@ -157,12 +243,17 @@ while True:
                 print(player_2_inventory)
                 break
         else:
-            if player_list['Player 1']['Secondary Stats']['Gold'] > trader['Items'][purchase][0] and trader['Inventory'][purchase] > 0:
+            cost = trader['Items'][purchase][0]
+            if player_list['Player 1']['Character Profile']['Charisma'] < 20:
+                 cost = int(cost * 1.1)
+            elif player_list['Player 1']['Character Profile']['Charisma'] > 80:
+                 cost = int(cost * 0.9)
+            if player_list['Player 1']['Secondary Stats']['Gold'] > cost and trader['Inventory'][purchase] > 0:
                 player_1_inventory.append(purchase)
-                player_list['Player 1']['Secondary Stats']['Gold'] -= trader['Items'][purchase][0]
+                player_list['Player 1']['Secondary Stats']['Gold'] -= cost
                 trader['Inventory'][purchase] -= 1
-            elif player_list['Player 1']['Secondary Stats']['Gold'] < trader['Items'][purchase][0]:
-                while player_list['Player 1']['Secondary Stats']['Gold'] < trader['Items'][purchase][0]:
+            elif player_list['Player 1']['Secondary Stats']['Gold'] < cost:
+                while player_list['Player 1']['Secondary Stats']['Gold'] < cost:
                     print('You can\'t afford that!')
                     print('Buy something you can afford. ')
                     purchase = input()
@@ -184,12 +275,17 @@ while True:
         elif purchase == 'no':
             break
         else:
-            if player_list['Player 2']['Secondary Stats']['Gold'] > trader['Items'][purchase][0] and trader['Inventory'][purchase] > 0:
+            cost = trader['Items'][purchase][0]
+            if player_list['Player 2']['Character Profile']['Charisma'] < 20:
+                 cost = int(cost * 1.1)
+            elif player_list['Player 2']['Character Profile']['Charisma'] > 80:
+                 cost = int(cost * 0.9)
+            if player_list['Player 2']['Secondary Stats']['Gold'] > cost and trader['Inventory'][purchase] > 0:
                 player_2_inventory.append(purchase)
-                player_list['Player 2']['Secondary Stats']['Gold'] -= trader['Items'][purchase][0]
+                player_list['Player 2']['Secondary Stats']['Gold'] -= cost
                 trader['Inventory'][purchase] -= 1
-            elif player_list['Player 2']['Secondary Stats']['Gold'] < trader['Items'][purchase][0]:
-                while player_list['Player 2']['Secondary Stats']['Gold'] < trader['Items'][purchase][0]:
+            elif player_list['Player 2']['Secondary Stats']['Gold'] < cost:
+                while player_list['Player 2']['Secondary Stats']['Gold'] < cost:
                     print('You can\'t afford that!')
                     print('Buy something you can afford. ')
                     purchase = input()
@@ -240,6 +336,9 @@ print('hits records the number of successful strikes on the enemy')
 print('misses records the number of successfully dodged enemy attacks')
 print('damage taken reflects all damage taken throughout the battle')
 print('health update is your character\'s current health')
+print('Character strength affects damage dealt.')
+print('Character dexterity affects chance of hitting target.')
+print('Character intellect affects mana costs.')
 print("\n")
 for i in [1,2]:
     player_number = 'Player ' + str(i)
@@ -285,17 +384,38 @@ while True:
             print(player_list['Player 1']['Characater Profile']['Name'] + ' missed!')
             player_list['Player 1']['Combat Stats']['misses'] += 1    
         else:
-            hit_chance = random.randint(-3,3)
-            mana_cost = 5
+            if player_list['Player 1']['Character Profile']['Dexterity'] < 30:
+                hit_chance = random.randint(-5,1)
+            elif player_list['Player 1']['Character Profile']['Dexterity'] > 70:
+                hit_chance = random.randint(-1,5)
+            else:
+                hit_chance = random.randint(-3,3)
+            if player_list['Player 1']['Character Profile']['Intellect'] < 30:
+                mana_cost = 15
+            elif player_list['Player 1']['Character Profile']['Intellect'] > 70:
+                mana_cost = 5
+            else:
+                mana_cost = 10
+            damage_dealt = equipped[0]
+            if player_list['Player 1']['Character Profile']['Strength'] < 15:
+                damage_dealt = int(damage_dealt * 0.8)
+            elif player_list['Player 1']['Character Profile']['Strength'] > 85:
+                damage_dealt = int(damage_dealt * 1.2)
+            if equipped[1] == 'Slow':
+                damage_dealt += 5
+                player_list['Player 1']['Secondary Stats']['Health'] -= 2
+            elif equipped[1] == 'Fast':
+                damage_dealt -= 2
+                mana_cost = int(mana_cost * 0.95)
             if hit_chance >= 0:
                 print(player_list['Player 1']['Character Profile']['Name'] + '\'s attack hit!')
-                player_list['Player 2']['Secondary Stats']['Health'] -= equipped[0]
-                player_list['Player 2']['Combat Stats']['damage taken'] = equipped[0]
+                player_list['Player 2']['Secondary Stats']['Health'] -= damage_dealt
+                player_list['Player 2']['Combat Stats']['damage taken'] = damage_dealt
                 player_list['Player 1']['Secondary Stats']['Mana'] -= mana_cost
                 player_list['Player 1']['Combat Stats']['hits'] += 1
             else:
                 print(player_list['Player 1']['Character Profile']['Name'] + ' missed!')
-                player_list['Player 1']['Secondary Stats']['Mana'] -= mana_cost*0.4
+                player_list['Player 1']['Secondary Stats']['Mana'] -= int(mana_cost*0.4)
                 player_list['Player 1']['Combat Stats']['misses'] += 1
         print('End of ' + player_list['Player 1']['Character Profile']['Name'] + '\'s turn.')
         print(player_list['Player 1']['Character Profile']['Name'] + '\'s stats')
@@ -339,17 +459,42 @@ while True:
             print(player_list['Player 2']['Character Profile']['Name'] + ' missed!')
             player_list['Player 2']['Combat Stats']['misses'] += 1    
         else:
-            hit_chance = random.randint(-3,3)
-            mana_cost = 5
+            if player_list['Player 2']['Character Profile']['Dexterity'] < 30:
+                hit_chance = random.randint(-5,1)
+            elif player_list['Player 2']['Character Profile']['Dexterity'] > 70:
+                hit_chance = random.randint(-1,5)
+            else:
+                hit_chance = random.randint(-3,3)
+            if player_list['Player 2']['Character Profile']['Intellect'] < 30:
+                mana_cost = 15
+            elif player_list['Player 2']['Character Profile']['Intellect'] > 70:
+                mana_cost = 5
+            else:
+                mana_cost = 10
+            damage_dealt = equipped[0]
+            if player_list['Player 2']['Character Profile']['Strength'] < 15:
+                damage_dealt = int(damage_dealt * 0.8)
+            elif player_list['Player 2']['Character Profile']['Strength'] > 85:
+                damage_dealt = int(damage_dealt * 1.2)
+            if player_list['Player 2']['Character Profile']['Strength'] < 15:
+                damage_dealt = int(damage_dealt * 0.8)
+            elif player_list['Player 2']['Character Profile']['Strength'] > 85:
+                damage_dealt = int(damage_dealt * 1.2)
+            if equipped[1] == 'Slow':
+                damage_dealt += 5
+                player_list['Player 2']['Secondary Stats']['Health'] -= 2
+            elif equipped[1] == 'Fast':
+                damage_dealt -= 2
+                mana_cost = int(mana_cost * 0.95)
             if hit_chance >= 0:
                 print(player_list['Player 2']['Character Profile']['Name'] + '\'s attack hit!')
-                player_list['Player 1']['Secondary Stats']['Health'] -= equipped[0]
-                player_list['Player 1']['Combat Stats']['damage taken'] = equipped[0]
+                player_list['Player 1']['Secondary Stats']['Health'] -= damage_dealt
+                player_list['Player 1']['Combat Stats']['damage taken'] = damage_dealt
                 player_list['Player 2']['Secondary Stats']['Mana'] -= mana_cost
                 player_list['Player 2']['Combat Stats']['hits'] += 1
             else:
                 print(player_list['Player 2']['Character Profile']['Name'] + ' missed!')
-                player_list['Player 2']['Secondary Stats']['Mana'] -= mana_cost*0.4
+                player_list['Player 2']['Secondary Stats']['Mana'] -= int(mana_cost*0.4)
                 player_list['Player 2']['Combat Stats']['misses'] += 1
         print('End of ' + player_list['Player 2']['Character Profile']['Name'] + '\'s turn.')
         print(player_list['Player 2']['Character Profile']['Name'] + '\'s stats')
